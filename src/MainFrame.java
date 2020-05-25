@@ -168,6 +168,28 @@ public class MainFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Введите текст сообщения", "Ошибка", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            int iter = 0;
+            String regex = "\\d+";
+            for (String destAddress : destinationAddress.split("\\.")) {
+                if(!destAddress.matches(regex)){
+                    JOptionPane.showMessageDialog(this, "Введен некорректный адрес узла-получателя", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                    textFieldTo.requestFocus();
+                    return;
+                }
+                iter++;
+                int i = Integer.parseInt(destAddress);
+                if( i < 0 || i > 128){
+                    JOptionPane.showMessageDialog(this, "Введен некорректный адрес узла-получателя", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                    textFieldTo.requestFocus();
+                    return;
+                }
+            }
+            if(iter != 4){
+                JOptionPane.showMessageDialog(this, "Введен некорректный адрес узла-получателя", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                textFieldTo.requestFocus();
+                return;
+            }
+
 
             // Создаем сокет для соединения
             final Socket socket = new Socket(destinationAddress, SERVER_PORT);
